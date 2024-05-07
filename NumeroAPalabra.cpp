@@ -74,7 +74,7 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
         return Millones == 1 ? "Un millon " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "") : ConvertirAPalabras(Millones, true) + "millones " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "");
     }
     //corregin para un
-    return "numero fuera de los limitas 0-999,999,999";
+    return "numero fuera de los limites 0-999,999,999.99";
 }
 
 void ConvertirAPalabras(double num) {
