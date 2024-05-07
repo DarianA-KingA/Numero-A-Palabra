@@ -19,6 +19,7 @@ Fecha: 3/5/2024
 
 string ConvertirAPalabras(int numero, bool unEnLugarDeUno=false);
 void ConvertirAPalabras(double num);
+void limpiarBuffer();
 
 
 string cero_a_29[] = {"uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
@@ -34,6 +35,7 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
     //0
     if (numero == 0)
         return "cero";
+    
     //1-29
     if (numero <= 29)
     {
@@ -73,17 +75,47 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
         int restante = numero % 1000000;
         return Millones == 1 ? "Un millon " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "") : ConvertirAPalabras(Millones, true) + "millones " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "");
     }
+
     //corregin para un
     return "numero fuera de los limites 0-999,999,999.99";
 }
 
 void ConvertirAPalabras(double num) {
-     int parteEntera = static_cast<int>(std::floor(num));
-     int centavos = static_cast<int>((num - parteEntera) * 100);
-     string parteEnteraEnPalabras = ConvertirAPalabras(parteEntera);
-     std::cout << "El monto en palabras es: " << parteEnteraEnPalabras << "con " << centavos << " centavos." << std::endl;
+    string menos="";
+
+    if(num < 0)
+    {
+        menos ="Menos ";
+        num *= -1.00;
+    }
+    int parteEntera = static_cast<int>(std::floor(num));
+    
+    int centavos = static_cast<int>((num - parteEntera) * 100);
+    string parteEnteraEnPalabras = ConvertirAPalabras(parteEntera);
+    std::cout << "El monto en palabras es: "<< menos << parteEnteraEnPalabras << "con " << centavos << " centavos." << std::endl;
+}
+void limpiarBuffer() {
+    cin.clear(); // Borrar el estado de error
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar cualquier carácter en el búfer de entrada
 }
 int main() {
-    ConvertirAPalabras(999999999.12);
+    double numero;
+    bool repeat =true;
+    while (repeat)
+    {
+        cout << "Por favor, introduce el monto: ";
+        cin >> numero;
+        if (cin.fail()) {
+            cout << "Entrada no válida. Presione cualquier tecla para volver a intentarlo...";
+            limpiarBuffer(); // Limpiar el búfer de entrada antes de esperar a que el usuario presione una tecla
+            cin.get();
+        }
+        else
+        {
+            ConvertirAPalabras(numero);
+            repeat =false;
+        }
+    }
+   //999999999.12
     return 0;
 }
