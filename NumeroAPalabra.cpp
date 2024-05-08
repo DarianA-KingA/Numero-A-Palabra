@@ -123,7 +123,7 @@ void ConvertirAPalabras() {
             int centavos = static_cast<int>((numero - parteEntera) * 100);
             string parteEnteraEnPalabras = ConvertirAPalabras(parteEntera);
             std::cout << "El monto en palabras es: "<< menos << parteEnteraEnPalabras << "con " << centavos << " centavos." << std::endl;
-
+            repeat =false;
         }
     }
 
