@@ -43,7 +43,7 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
             return "veintiún ";
         if (unEnLugarDeUno && numero == 1)
             return "un ";
-        return  cero_a_29[numero-1]+" " ;
+        return  cero_a_29[numero-1]+"" ;
     }
     //99
     if (numero <=100) 
@@ -51,7 +51,7 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
 
         unidad = numero % 10;
         decena = numero / 10;
-        return numero == 100 ? "cien " : decenas[decena - 3] + (unidad != 0 ? " y " + ConvertirAPalabras(unidad, unEnLugarDeUno) :"");
+        return numero == 100 ? "cien " : decenas[decena - 3] + (unidad != 0 ? " y " + ConvertirAPalabras(unidad, unEnLugarDeUno)+" " :"");
     }
     //999
     if (numero <= 1000)
@@ -59,7 +59,7 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
         //centena
         decena = numero % 100;
         centena = numero / 100;
-        return numero == 1000? "mil " : centenas[centena - 1] + (decena != 0 ? " " + ConvertirAPalabras(decena, unEnLugarDeUno) : "");
+        return numero == 1000? "mil " : centenas[centena - 1]+" "+ (decena != 0 ? " " + ConvertirAPalabras(decena, unEnLugarDeUno) : "");
 
     }
     // 999,999
@@ -69,40 +69,28 @@ string ConvertirAPalabras(int numero, bool unEnLugarDeUno) {
         int restante = numero%1000;
         return Miles == 1 ? "mil " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "") : ConvertirAPalabras(Miles,true) + "mil " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "");
     }
-    if (numero / 1000000 < 1000000)
+    if (numero/1000 < 1000000)
     {
+        int x = numero/1000000;
         int Millones = numero / 1000000;
         int restante = numero % 1000000;
         return Millones == 1 ? "Un millon " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "") : ConvertirAPalabras(Millones, true) + "millones " + (restante != 0 ? "" + ConvertirAPalabras(restante) : "");
     }
 
     //corregin para un
-    return "numero fuera de los limites 0-999,999,999.99";
-}
-
-void ConvertirAPalabras(double num) {
-    string menos="";
-
-    if(num < 0)
-    {
-        menos ="Menos ";
-        num *= -1.00;
-    }
-    int parteEntera = static_cast<int>(std::floor(num));
-    
-    int centavos = static_cast<int>((num - parteEntera) * 100);
-    string parteEnteraEnPalabras = ConvertirAPalabras(parteEntera);
-    std::cout << "El monto en palabras es: "<< menos << parteEnteraEnPalabras << "con " << centavos << " centavos." << std::endl;
+    return "";
 }
 void limpiarBuffer() {
     cin.clear(); // Borrar el estado de error
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar cualquier carácter en el búfer de entrada
 }
-int main() {
+void ConvertirAPalabras() {
+
     double numero;
     bool repeat =true;
     while (repeat)
     {
+        string menos="";
         cout << "Por favor, introduce el monto: ";
         cin >> numero;
         if (cin.fail()) {
@@ -110,12 +98,39 @@ int main() {
             limpiarBuffer(); // Limpiar el búfer de entrada antes de esperar a que el usuario presione una tecla
             cin.get();
         }
+        if(numero < 0)
+        {
+                menos ="Menos ";
+                numero *= -1.00;
+        }
+        if(numero>= 1000000000)
+        {
+            cout << "Numero fuera de los limites -999,999,999.99-999,999,999.99. Presione cualquier tecla para volver a intentarlo...";
+            limpiarBuffer(); // Limpiar el búfer de entrada antes de esperar a que el usuario presione una tecla
+            cin.get();
+        }
         else
         {
-            ConvertirAPalabras(numero);
-            repeat =false;
+            
+
+            if(numero < 0)
+            {
+                menos ="Menos ";
+                numero *= -1.00;
+            }
+            int parteEntera = static_cast<int>(std::floor(numero));
+            
+            int centavos = static_cast<int>((numero - parteEntera) * 100);
+            string parteEnteraEnPalabras = ConvertirAPalabras(parteEntera);
+            std::cout << "El monto en palabras es: "<< menos << parteEnteraEnPalabras << "con " << centavos << " centavos." << std::endl;
+
         }
     }
+
+}
+
+int main() {
+    ConvertirAPalabras();
    //999999999.12
     return 0;
 }
